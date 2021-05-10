@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="GraderNight" parent="Theme.MaterialComponents.DayNight">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <item name="android:textColor">@color/textcolor_night</item>
+
+        <item name="materialAlertDialogTheme">@style/MaterialAlertDialog.Rounded</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:fragmentEnterTransition">@android:transition/explode</item>
+        <item name="popupMenuStyle">@style/RoundedPopupMenu</item>
+        <item name="popupMenuBackground">@drawable/popup_menu_background</item>
+
+    </style>
+
+</resources>

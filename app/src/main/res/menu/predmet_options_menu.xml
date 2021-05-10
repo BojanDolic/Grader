@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/predmet_context_menu_delete_predmet"
+        android:title="Obriši predmet" />
+
+    <item
+        android:id="@+id/predmet_context_menu_delete_ocjene"
+        android:title="Obriši ocjene predmeta" />
+
+</menu>

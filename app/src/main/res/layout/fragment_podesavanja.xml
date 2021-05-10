@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/podesavanjaCoordinatorLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PodesavanjaFragment">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp">
+
+
+            <TextView
+                android:id="@+id/podesavanjaText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Podešavanja"
+                app:fontFamily="@font/manrope_bold"
+                android:textSize="26sp"
+                android:textColor="#474747"
+                android:layout_marginStart="29dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"/>
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/podesavanja_predmeti_sekcija"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="9dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/stroke_color">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Predmeti"
+                        app:fontFamily="@font/manrope_regular"
+                        android:textSize="18sp"
+                        android:textColor="#474747"
+                        android:layout_margin="12dp"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/podesavanjaObrisiPredmeteBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/delete_icon"
+                        android:text="Obriši sve predmete"
+                        app:iconTint="@color/darkGrey"
+                        app:iconSize="32dp"
+                        android:textAlignment="viewStart"
+                        app:iconPadding="24dp"
+                        android:fontFamily="@font/manrope_bold"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/podesavanjaObrisiOcjeneBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/close_icon"
+                        android:text="Obriši ocjene predmeta"
+                        app:iconTint="@color/red"
+                        app:iconSize="32dp"
+                        app:iconPadding="24dp"
+                        android:textAlignment="viewStart"
+                        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/podesavanja_ostalo_sekcija"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="9dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/stroke_color">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ostalo"
+                        app:fontFamily="@font/manrope_regular"
+                        android:textSize="18sp"
+                        android:textColor="#474747"
+                        android:layout_margin="12dp"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/podesavanjaOAplikacijiBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/person_icon"
+                        app:iconTint="#006FEC"
+                        android:textAlignment="viewStart"
+                        app:iconSize="32dp"
+                        app:iconPadding="24dp"
+                        android:text="O aplikaciji"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/podesavanjaPrijaviGreskuBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/bug_icon"
+                        app:iconTint="@color/colorSecondary"
+                        android:textAlignment="viewStart"
+                        app:iconSize="32dp"
+                        app:iconPadding="24dp"
+                        android:text="Prijavi grešku"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/obrisiSvePredmeteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="6dp"
+                app:cardUseCompatPadding="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:background="#F13A3A"
+                        android:scaleType="center"
+                        android:src="@drawable/delete_icon"
+                        app:tint="#FFFFFF" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="6dp"
+                        android:layout_weight="3"
+                        android:text="Obriši sve predmete"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- <androidx.cardview.widget.CardView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="9dp"
+         app:cardUseCompatPadding="true"
+         app:cardCornerRadius="6dp">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Developer contact"
+                 android:textAlignment="center" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="horizontal">
+
+
+         </LinearLayout>
+
+
+         </LinearLayout>
+
+
+     </androidx.cardview.widget.CardView> -->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

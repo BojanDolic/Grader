@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/predmetiFragment"
+        android:title="Predmeti"
+        android:icon="@drawable/predmeti_icon"/>
+    <item
+        android:title="Profil"
+        android:id="@+id/profilFragment"
+        android:icon="@drawable/person_icon"
+        android:menuCategory="secondary"/>
+    <item
+        android:id="@+id/podesavanjaFragment"
+        android:title="Podešavanja"
+        android:icon="@drawable/icon_settings"
+        android:menuCategory="secondary"/>
+
+</menu>

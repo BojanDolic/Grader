@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.ProfilFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="6dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="6dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/stroke_color"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/prosjekSlikaProfil"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/prosjek_icon"
+                    android:layout_centerVertical="true"
+                    app:tint="@color/colorSecondary"/>
+
+                <TextView
+                    android:id="@+id/prosjekTextProfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ukupan prosjek:"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/prosjekSlikaProfil"
+                    app:fontFamily="@font/manrope_regular"/>
+
+                <TextView
+                    android:id="@+id/profilProsjekOcjena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/prosjekTextProfil"
+                    android:layout_toEndOf="@id/prosjekSlikaProfil"
+                    android:text="4.89"
+                    android:transitionName="prosjekPredmetaTextTransition"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/manrope_extrabold" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

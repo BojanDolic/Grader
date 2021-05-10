@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <item name="android:textColor">@color/textcolor_light</item>
+
+        <item name="materialAlertDialogTheme">@style/MaterialAlertDialog.Rounded</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:fragmentEnterTransition">@android:transition/explode</item>
+        <item name="popupMenuStyle">@style/RoundedPopupMenu</item>
+        <item name="popupMenuBackground">@drawable/popup_menu_background</item>
+     </style>
+
+     <style name="RoundedPopupMenu" parent="Widget.MaterialComponents.PopupMenu">
+         <item name="popupMenuBackground">@drawable/popup_menu_background</item>
+
+    </style>
+
+    <style name="progressBarStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorAccent">@color/colorSecondary</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomDialogButton</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <!-- STILOVI ZA DIALOG BUTTONE -->
+
+    <style name="CustomDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+
+        <item name="fontFamily">@font/roboto_extrabold</item>
+
+    </style>
+
+    <!-- STILOVI ZA DIALOG -->
+    
+    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents" >
+        <item name="shapeAppearance">@style/RoundedShape</item>
+    </style>
+    
+    <style name="RoundedShape" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>

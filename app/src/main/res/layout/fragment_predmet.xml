@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.PredmetFragment"
+    android:animateLayoutChanges="false">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/predmetProsjekBackgroundCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="6dp"
+                app:cardUseCompatPadding="true"
+                android:transitionName="predmetBackgroundCardTransition"
+                app:contentPadding="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/prosjekSlikaPredmet"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="24dp"
+                            android:src="@drawable/prosjek_icon"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:id="@+id/prosjekTextPredmet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prosjek:"
+                            android:textSize="20sp"
+                            android:layout_toEndOf="@id/prosjekSlikaPredmet"
+                            app:fontFamily="@font/roboto_light"/>
+
+                        <TextView
+                            android:id="@+id/predmetProsjekOcjena"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/prosjekTextPredmet"
+                            android:layout_toEndOf="@id/prosjekSlikaPredmet"
+                            android:text="4.89"
+                            android:transitionName="prosjekPredmetaTextTransition"
+                            android:textSize="22sp"
+                            app:fontFamily="@font/roboto_extrabold" />
+
+                    </RelativeLayout>
+
+
+
+                 <!--   <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:text="Dodaj ocjenu"
+                        app:icon="@drawable/icon_add"
+                        android:textSize="10sp"
+                        app:iconSize="19dp"
+                        app:backgroundTint="@color/colorSecondary"
+                        app:cornerRadius="12dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:text="Dodaj podsjetnik"
+                        app:icon="@drawable/chat_icon"
+                        android:textSize="10sp"
+                        app:iconSize="15dp"
+                        app:backgroundTint="@color/purple"
+                        app:cornerRadius="12dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"/>  -->
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/izbrisiPodsjetnikBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:text="@string/izbrisi_podsjetnik_text"
+                        app:icon="@drawable/close_icon"
+                        android:textSize="10sp"
+                        app:iconSize="15dp"
+                        app:backgroundTint="@color/red"
+                        app:cornerRadius="12dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:onClick="cancelPodsjetnikTesta"/>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+          <!--  <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                app:cardCornerRadius="6dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="9dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/obavjestenjePredmetIcon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/warning_icon"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Trebali biste dobiti još jednu peticu da biste popravili ocjenu na 4"
+                            android:layout_toEndOf="@id/obavjestenjePredmetIcon"
+                            app:fontFamily="@font/roboto_regular"
+                            android:maxLines="3"/>
+
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView> -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/predmet_ocjene_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="9dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="9dp"
+                app:contentPadding="6dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/predmet_ocjene_container_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ocjene"
+                        app:fontFamily="@font/roboto_bold"
+                        android:textSize="18sp" />
+
+                    <ImageButton
+                        android:id="@+id/expand_ocjene_container_btn"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/dropdown_arrow"
+                        android:layout_alignParentEnd="true"
+                        android:background="#00000000"/>
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/predmetOcjeneRecycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/predmet_ocjene_container_title"
+                        tools:listitem="@layout/ocjena_item_predmet_layout"
+                        android:layout_marginTop="3dp"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/speedDialFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="-6dp"
+        app:sdMainFabClosedBackgroundColor="@color/colorSecondary"
+        app:sdMainFabOpenedBackgroundColor="@color/red"
+        app:sdMainFabOpenedIconColor="#fff"
+        app:sdMainFabClosedIconColor="#000"
+        app:sdMainFabClosedSrc="@drawable/icon_add"
+        app:sdExpansionMode="left"/>
+    
+    <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dodajOcjenuPredmetaBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:transitionName="addPredmetAndOcjenuFab"
+        android:src="@drawable/icon_add"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="12dp"/>  -->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

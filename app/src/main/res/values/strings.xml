@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Grader</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="podesavanja_text">Podešavanja</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ime_predmeta">Ime predmeta</string>
+    <string name="unesite_trenutne_ocjene_text">Unesite trenutne ocjene: (nije obavezno)</string>
+
+    <string name="predmet_options_clear_test_text">Uklonite podsjetnik za test</string>
+    <string name="datum_azuriranja_text">Datum ažuriranja:</string>
+    <string name="datum_azuriranja_datum">30.08.2020</string>
+    <string name="verzija_aplikacije_text">Verzija aplikacije:</string>
+    <string name="verzija_aplikacije">v1.0</string>
+    <string name="autor_aplikacije_text">Autor aplikacije:</string>
+    <string name="autor_aplikacije">Bojan Dolić</string>
+    <string name="verzija_aplikacije_changelog">- Dodani podsjetnici za test
+        \n- Ispravljene pronađene greške u aplikaciji
+        \n- Promijenjen izgled podešavanja
+        \n- Promijenjen izgled predmeta
+        \n- Dodane nove stavke u podešavanjima
+        \n- Dodan ekran za prijavu grešaka
+        \n- Sitne izmjene oko nekih elemenata aplikacije
+        \n- Dodan sistem prijave grešaka
+        \n- Dodan ekran "O aplikaciji"
+        \n- Dodane banner reklame
+        \n- Izmjene oko tekstova
+        \n- Izmijenjen izgled predmet item-a
+        \n- Dodane popup meni opcije za predmete</string>
+    <string name="prijavite_gresku_text">Prijavite grešku</string>
+    <string name="prijavi_text">PRIJAVI</string>
+    <string name="bug_report_hint_text">Detaljno opišite grešku koju ste pronašli</string>
+    <string name="bug_report_napomena_text">
+        <b>Napomena:</b> Svaka prijava koja ne sadrži odgovarajući naslov, te informacije o uređaju biće automatski odbijena.</string>
+    <string name="izbrisi_podsjetnik_text">Izbriši podsjetnik</string>
+
+</resources>
