@@ -2,7 +2,11 @@ package com.electrocoder.grader
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import com.electrocoder.grader.database.PredmetiDatabase
+import com.electrocoder.grader.entities.Ocjena
 import com.electrocoder.grader.entities.Predmet
+import com.electrocoder.grader.entities.PredmetWithOcjena
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -12,7 +16,7 @@ class PredmetiRepo(application: Application) : CoroutineScope {
         get() = Dispatchers.Main
 
     private var predmetiDAO: PredmetDAO?
-    private lateinit var predmeti: LiveData<List<Predmet>>
+    private lateinit var predmeti: LiveData<List<PredmetWithOcjena>>
 
 
     init {
@@ -21,31 +25,55 @@ class PredmetiRepo(application: Application) : CoroutineScope {
         predmeti = predmetiDAO?.getAllPredmete()!!
     }
 
-    fun insert(predmet: Predmet) {
-        launch { insertPredmetInBackground(predmet) }
+    suspend fun insert(predmet: Predmet) {
+        insertPredmetInBackground(predmet)
     }
 
-    fun deletePredmet(predmet: Predmet) {
-        launch { deletePredmetInBackground(predmet) }
+    suspend fun updateOcjenePredmeta(predmet: PredmetWithOcjena) {
+        predmetiDAO?.insertOcjene(predmet)
     }
 
-    fun deleteAllPredmete() {
-        launch { deleteAllPredmeteInBackground() }
+    suspend fun insertPredmetWithOcjene(predmet: PredmetWithOcjena) {
+        predmetiDAO?.insertPredmetWithOcjene(predmet)
+    }
+
+    suspend fun insertOcjenu(ocjena: Ocjena) {
+        predmetiDAO?.insertOcjena(ocjena)
+    }
+
+    suspend fun deletePredmet(predmet: Predmet) {
+        predmetiDAO?.deletePredmet(predmet)
+    }
+
+    suspend fun deleteAllPredmete() {
+        predmetiDAO?.deleteAllPredmete()
+    }
+
+    fun getWholePredmet(idPredmeta: Long): LiveData<PredmetWithOcjena> {
+        return predmetiDAO?.getPredmetWithOcjene(idPredmeta)?.asLiveData()!!
     }
 
     fun updatePredmet(predmet: Predmet) {
         launch { updatePredmetInBackground(predmet) }
     }
 
-
-    fun getPredmet(idPredmeta: Int): Predmet {
-        lateinit var predmet: Predmet
-        runBlocking { predmet = getPredmetFromDatabase(idPredmeta) }
-
-        return predmet
+    suspend fun getProsjekPredmeta(): Float {
+        return predmetiDAO?.getPredmetiProsjek()!!
     }
 
-    fun getAllPredmete(): LiveData<List<Predmet>> {
+    suspend fun clearOcjenePredmeta(idPredmeta: Long) {
+        predmetiDAO?.clearOcjenePredmeta(idPredmeta)
+    }
+
+    /*suspend fun getPredmet(idPredmeta: Long): Predmet? {
+        return predmetiDAO?.getPredmet(idPredmeta)
+        *//*lateinit var predmet: Predmet
+        runBlocking { predmet = getPredmetFromDatabase(idPredmeta) }
+
+        return predmet*//*
+    }*/
+
+    fun getAllPredmete(): LiveData<List<PredmetWithOcjena>> {
         return predmeti
     }
 
@@ -56,7 +84,7 @@ class PredmetiRepo(application: Application) : CoroutineScope {
         return predmeti
     }
 
-    fun getPredmetiCount(): Int {
+    suspend fun getPredmetiCount(): Int {
         var brojPredmeta = 0
         runBlocking { brojPredmeta = getPredmetiCountBackground() }
 
@@ -105,19 +133,19 @@ class PredmetiRepo(application: Application) : CoroutineScope {
         }
     }
 
-   private suspend fun getPredmetFromDatabase(idPredmeta: Int): Predmet {
+   /*private suspend fun getPredmetFromDatabase(idPredmeta: Int): Predmet {
         lateinit var predmet: Predmet
         withContext(Dispatchers.IO) {
             predmet = predmetiDAO?.getPredmet(idPredmeta)!!
         }
         return predmet
-    }
+    }*/
 
-    private suspend fun deleteAllPredmeteInBackground() {
+    /*private suspend fun deleteAllPredmeteInBackground() {
         withContext(Dispatchers.IO) {
-            predmetiDAO?.deleteAllPredmete()
+            predmet.deleteAllPredmete()
         }
-    }
+    }*/
 
     private suspend fun updatePredmetInBackground(predmet: Predmet) {
         withContext(Dispatchers.IO) {
@@ -134,9 +162,8 @@ class PredmetiRepo(application: Application) : CoroutineScope {
     private suspend fun clearOcjenePredmetaInBackground() {
 
         withContext(Dispatchers.IO) {
-            predmetiDAO?.clearOcjenePredmeta()
+            predmetiDAO?.clearOcjeneAllPredmeta()
         }
 
     }
-
 }

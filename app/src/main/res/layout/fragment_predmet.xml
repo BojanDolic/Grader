@@ -55,7 +55,7 @@
                             android:text="Prosjek:"
                             android:textSize="20sp"
                             android:layout_toEndOf="@id/prosjekSlikaPredmet"
-                            app:fontFamily="@font/roboto_light"/>
+                            app:fontFamily="@font/manrope_regular"/>
 
                         <TextView
                             android:id="@+id/predmetProsjekOcjena"
@@ -63,10 +63,10 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/prosjekTextPredmet"
                             android:layout_toEndOf="@id/prosjekSlikaPredmet"
-                            android:text="4.89"
+                            android:text="0.00"
                             android:transitionName="prosjekPredmetaTextTransition"
                             android:textSize="22sp"
-                            app:fontFamily="@font/roboto_extrabold" />
+                            app:fontFamily="@font/manrope_extrabold" />
 
                     </RelativeLayout>
 
@@ -171,11 +171,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="9dp"
-                app:cardElevation="1dp"
+                app:cardElevation="0dp"
                 app:cardUseCompatPadding="true"
                 android:layout_margin="9dp"
                 app:contentPadding="6dp"
-                >
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/stroke_color">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -186,7 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ocjene"
-                        app:fontFamily="@font/roboto_bold"
+                        app:fontFamily="@font/manrope_bold"
                         android:textSize="18sp" />
 
                     <ImageButton

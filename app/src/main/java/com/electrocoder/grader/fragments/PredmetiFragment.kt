@@ -1,22 +1,16 @@
 package com.electrocoder.grader.fragments
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +20,7 @@ import com.electrocoder.grader.R
 import com.electrocoder.grader.adapters.PredmetiRecyclerAdapter
 import com.electrocoder.grader.databinding.PredmetiFragmentBinding
 import com.electrocoder.grader.entities.Predmet
+import com.electrocoder.grader.entities.PredmetWithOcjena
 import com.electrocoder.grader.util.Constants
 import com.electrocoder.grader.util.PodsjetnikWorkerUtil
 import com.electrocoder.grader.util.PredmetUtilFunctions
@@ -34,7 +29,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -85,10 +79,10 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
         predmetiViewModel.getAllPredmete().observe(viewLifecycleOwner, Observer { predmeti ->
             predmetiRecyclerAdapter.submitList(predmeti)
 
-            for (predmet in predmeti) {
-                if(WorkManager.getInstance(requireContext()).getWorkInfosByTag(predmet.imePredmeta + "1").isDone) {
-                    predmet.zakazanTest.value = false
-                    predmetiViewModel.updatePredmet(predmet)
+            for (predmetWithOcjena in predmeti) {
+                if(WorkManager.getInstance(requireContext()).getWorkInfosByTag(predmetWithOcjena.predmet.imePredmeta + "1").isDone) {
+                    predmetWithOcjena.predmet.zakazanTest.value = false
+                    predmetiViewModel.updatePredmet(predmetWithOcjena.predmet)
                 }
             }
 
@@ -114,10 +108,10 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
                 val predmet = predmetiRecyclerAdapter.getPredmetAt(viewHolder.adapterPosition)
 
                 // Provjerava stanje workera i ujedno ih zaustavlja
-                PodsjetnikWorkerUtil.cancelPredmetPodsjetnikWorkers(requireContext(), predmet)
+                PodsjetnikWorkerUtil.cancelPredmetPodsjetnikWorkers(requireContext(), predmet.predmet)
 
-                predmetiViewModel.deletePredmet(predmet)
-                val snackbar = Snackbar.make(binding.root, "Obrisali ste predmet: ${predmet.imePredmeta}", Snackbar.LENGTH_SHORT)
+                predmetiViewModel.deletePredmet(predmet.predmet)
+                val snackbar = Snackbar.make(binding.root, "Obrisali ste predmet: ${predmet.predmet.imePredmeta}", Snackbar.LENGTH_SHORT)
                 snackbar.anchorView = binding.addPredmetBtn
                 snackbar.show()
             }
@@ -158,18 +152,51 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
 
 
 
-    override fun onPredmetClicked(predmet: Predmet, prosjekText: TextView, backgroundCard: MaterialCardView, pozicija: Int) {
+    /*override fun onPredmetClicked(predmet: Predmet, prosjekText: TextView, backgroundCard: MaterialCardView, pozicija: Int) {
 
-        val action = PredmetiFragmentDirections.actionPredmetiFragmentToPredmetFragment(predmet.id!!, pozicija, predmet.imePredmeta)
+
+        //val bundle = bundleOf("izabranPredmet" to predmet.id, "imePredmeta" to predmet.imePredmeta)
+
+        //findNavController().navigate(R.id.predmetFragment, bundle, null, extras)
+    }*/
+
+    /*override fun onPredmetClicked(
+        predmet: PredmetWithOcjena,
+        prosjekText: TextView,
+        backgroundCard: MaterialCardView,
+        pozicija: Int
+    ) {
+        //predmet.predmet.id!!
+
+
+        *//*val action = PredmetiFragmentDirections.actionPredmetiFragmentToPredmetFragment()
+
+        val extras = FragmentNavigatorExtras(prosjekText to prosjekText.transitionName,
+            binding.addPredmetBtn to "addPredmetAndOcjenuFab")
+
+        findNavController().navigate(action, extras)*//*
+    }*/
+
+    override fun onPredmetClicked(
+        predmet: PredmetWithOcjena,
+        prosjekText: TextView,
+        backgroundCard: MaterialCardView,
+        idPredmeta: Long
+    ) {
+
+        Log.d("TAG", "onPredmetClicked: ID PREDMETA: $idPredmeta")
+
+        val action = PredmetiFragmentDirections.actionPredmetiFragmentToPredmetFragment(
+            predmet,
+            0,
+            predmet.predmet.imePredmeta,
+            idPredmeta
+        )
 
         val extras = FragmentNavigatorExtras(prosjekText to prosjekText.transitionName,
             binding.addPredmetBtn to "addPredmetAndOcjenuFab")
 
         findNavController().navigate(action, extras)
-
-        //val bundle = bundleOf("izabranPredmet" to predmet.id, "imePredmeta" to predmet.imePredmeta)
-
-        //findNavController().navigate(R.id.predmetFragment, bundle, null, extras)
     }
 
     /**
@@ -177,17 +204,22 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
      * Poziva se kada se klikne na jednu od popup menu opcija
      */
 
-    override fun onContextMenuClicked(predmet: Predmet, opcija: Constants.CONTEXT_MENU_OPTIONS) {
+    override fun onContextMenuClicked(predmet: PredmetWithOcjena, opcija: Constants.CONTEXT_MENU_OPTIONS) {
 
         if(opcija == Constants.CONTEXT_MENU_OPTIONS.CONTEXT_MENU_DELETE_PREDMET) {
             MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
                 .setTitle("Obrišite predmet")
-                .setMessage("Želite obrisati predmet: ${predmet.imePredmeta} ?")
+                .setMessage("Želite obrisati predmet: ${predmet.predmet.imePredmeta} ?")
                 .setCancelable(false)
                 .setIcon(R.drawable.delete_icon)
                 .setPositiveButton("Obriši") { dialog, which ->
-                    predmetiViewModel.deletePredmet(predmet)
-                    val snackbar = Snackbar.make(binding.addPredmetBtn, "Obrisali ste predmet: ${predmet.imePredmeta}", Snackbar.LENGTH_SHORT)
+                    predmetiViewModel.deletePredmet(predmet.predmet)
+
+                    val snackbar = Snackbar.make(
+                        binding.addPredmetBtn,
+                        "Obrisali ste predmet: ${predmet.predmet.imePredmeta}",
+                        Snackbar.LENGTH_SHORT)
+
                     snackbar.anchorView = binding.addPredmetBtn
                     snackbar.show()
                 }
@@ -200,7 +232,7 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
 
             MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
                 .setTitle("Obrišite ocjene predmet")
-                .setMessage("Da li ste sigurni da želite obrisati ocjene predmeta: ${predmet.imePredmeta} ?")
+                .setMessage("Da li ste sigurni da želite obrisati ocjene predmeta: ${predmet.predmet.imePredmeta} ?")
                 .setCancelable(false)
                 .setIcon(R.drawable.delete_icon)
                 .setPositiveButton("Obriši") { dialog, which ->
@@ -208,7 +240,7 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
                     if(PredmetUtilFunctions.predmetHasOcjene(predmet))
                         PredmetUtilFunctions.deleteOcjenePredmetaAndSave(predmet, predmetiViewModel)
 
-                    val snackbar = Snackbar.make(binding.addPredmetBtn, "Obrisali ste ocjene predmeta: ${predmet.imePredmeta}", Snackbar.LENGTH_SHORT)
+                    val snackbar = Snackbar.make(binding.addPredmetBtn, "Obrisali ste ocjene predmeta: ${predmet.predmet.imePredmeta}", Snackbar.LENGTH_SHORT)
                     snackbar.anchorView = binding.addPredmetBtn
                     snackbar.show()
                 }

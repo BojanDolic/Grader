@@ -6,7 +6,9 @@ import android.text.TextUtils
 import androidx.core.graphics.ColorUtils
 import com.electrocoder.grader.PredmetiViewModel
 import com.electrocoder.grader.R
+import com.electrocoder.grader.entities.Ocjena
 import com.electrocoder.grader.entities.Predmet
+import com.electrocoder.grader.entities.PredmetWithOcjena
 
 object PredmetUtilFunctions {
 
@@ -27,13 +29,12 @@ object PredmetUtilFunctions {
         return available
     }
 
-    fun predmetHasOcjene(predmet: Predmet): Boolean = predmet.ocjene.isNotEmpty()
+    fun predmetHasOcjene(predmet: PredmetWithOcjena): Boolean = predmet.ocjene.isNotEmpty()
 
-    fun deleteOcjenePredmeta(predmet: Predmet) = predmet.ocjene.clear()
+    //fun deleteOcjenePredmeta(predmet: Predmet) = predmet.ocjene.clear()
 
-    fun deleteOcjenePredmetaAndSave(predmet: Predmet, predmetiViewModel: PredmetiViewModel) {
-        predmet.ocjene.clear()
-        predmetiViewModel.updatePredmet(predmet)
+    fun deleteOcjenePredmetaAndSave(predmetWithOcjena: PredmetWithOcjena, predmetiViewModel: PredmetiViewModel) {
+        predmetiViewModel.deleteOcjenePredmeta(predmetWithOcjena.predmet.id)
     }
 
     /**
@@ -71,4 +72,19 @@ object PredmetUtilFunctions {
     fun returnAlphedColor(color: Int, alpha: Int = 37): Int =
         ColorUtils.setAlphaComponent(color, alpha)
 
+
+    fun calculateProsjek(ocjene: List<Ocjena>): Double {
+        var prosjek: Double
+        var zbir = 0;
+
+        if(ocjene.isNotEmpty())
+            for(ocjena in ocjene) {
+                zbir += ocjena.ocjena
+            }
+        else return 0.0
+
+        prosjek = zbir / ocjene.size.toDouble()
+
+        return prosjek
+    }
 }

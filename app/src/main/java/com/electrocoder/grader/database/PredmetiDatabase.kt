@@ -1,4 +1,4 @@
-package com.electrocoder.grader
+package com.electrocoder.grader.database
 
 import android.content.Context
 import androidx.room.Database
@@ -6,9 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.electrocoder.Converters
+import com.electrocoder.grader.PredmetDAO
+import com.electrocoder.grader.entities.Ocjena
 import com.electrocoder.grader.entities.Predmet
 
-@Database(entities = [Predmet::class], version = 3)
+@Database(entities = [Predmet::class, Ocjena::class], version = 10)
 @TypeConverters(Converters::class)
 abstract class PredmetiDatabase : RoomDatabase() {
 

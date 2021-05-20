@@ -5,10 +5,17 @@ import androidx.room.TypeConverter
 import com.electrocoder.grader.entities.Predmet
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Converters {
 
 
+    @TypeConverter
+    fun convertToUnixTimestamp(date: Date): Long = date.time
+
+    @TypeConverter
+    fun convertToDate(timestamp: Long): Date = Date(timestamp)
 
 
     @TypeConverter

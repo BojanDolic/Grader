@@ -25,10 +25,29 @@
         <action
             android:id="@+id/action_predmetiFragment_to_addPredmetFragment"
             app:destination="@id/addPredmetFragment" />
+
         <action
             android:id="@+id/action_predmetiFragment_to_predmetFragment"
             app:destination="@id/predmetFragment"
-            />
+            app:popUpTo="@id/predmetiFragment" >
+
+            <argument
+                android:name="izabranPredmet"
+                app:argType="com.electrocoder.grader.entities.PredmetWithOcjena"/>
+
+            <argument
+                android:name="pozicija"
+                app:argType="integer" />
+
+            <argument
+                android:name="imePredmeta"
+                app:argType="string" />
+
+            <argument
+                android:name="idPredmeta"
+                app:argType="long" />
+
+        </action>
 
     </fragment>
 
@@ -71,16 +90,23 @@
         tools:layout="@layout/fragment_predmet"
         android:label="{imePredmeta}">
 
-        <argument android:name="izabranPredmet"
-            app:argType="integer"/>
+        <argument
+            android:name="izabranPredmet"
+            app:argType="com.electrocoder.grader.entities.PredmetWithOcjena"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
-        <argument android:name="pozicija"
-            app:argType="integer"/>
-
-        <argument android:name="imePredmeta"
-            app:argType="string"/>
-
-
+        <argument
+            android:name="pozicija"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="imePredmeta"
+            app:argType="string" />
+        <argument
+            android:name="idPredmeta"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 
     <fragment

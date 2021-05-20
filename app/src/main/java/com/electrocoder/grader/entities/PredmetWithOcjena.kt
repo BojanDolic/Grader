@@ -1,14 +1,28 @@
 package com.electrocoder.grader.entities
 
+import android.os.Parcelable
+import android.util.Log
 import androidx.room.Embedded
+import androidx.room.Ignore
 import androidx.room.Relation
+import com.electrocoder.grader.util.PredmetUtilFunctions
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class PredmetWithOcjena(
-    @Embedded val predmet: Predmet,
+    @Embedded var predmet: Predmet = Predmet(),
+
     @Relation(
-        parentColumn = "id",
-        entityColumn = "ocjenaId"
+        parentColumn = "predmet_id",
+        entityColumn = "predmet_id"
     )
-    val ocjene: List<Ocjena>
-)
+    var ocjene: MutableList<Ocjena> = mutableListOf(),
+
+    @Ignore var prosjek: Double = 0.0
+) : Parcelable {
+
+    init {
+        this.prosjek = PredmetUtilFunctions.calculateProsjek(ocjene)
+        Log.d("TAG", "PREDMET WITH OCJENA INIT: PROSJEK - ${this.prosjek}")
+    }
+}

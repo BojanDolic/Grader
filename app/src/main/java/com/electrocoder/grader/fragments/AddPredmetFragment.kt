@@ -16,7 +16,9 @@ import com.electrocoder.grader.PredmetiViewModel
 
 import com.electrocoder.grader.R
 import com.electrocoder.grader.databinding.AddpredmetFragmentBinding
+import com.electrocoder.grader.entities.Ocjena
 import com.electrocoder.grader.entities.Predmet
+import com.electrocoder.grader.entities.PredmetWithOcjena
 import com.electrocoder.grader.util.PredmetUtilFunctions
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -92,10 +94,12 @@ class AddPredmetFragment : Fragment() {
                         interAD?.show(requireActivity())
                         findNavController().navigateUp()
                     } else {
-                        var predmet = Predmet()
-                        predmet.imePredmeta = imePredmetaText
-                        predmet.ocjene = parseOcjeneFromInput(binding.ocjeneInput)
-                        viewModel.insert(predmet)
+                        var predmetWithOcjene = PredmetWithOcjena()
+                        predmetWithOcjene.predmet.imePredmeta = imePredmetaText
+                        predmetWithOcjene.ocjene = parseOcjeneFromInput(binding.ocjeneInput)
+                        /*predmet.imePredmeta = imePredmetaText
+                        predmet.ocjene = parseOcjeneFromInput(binding.ocjeneInput)*/
+                        viewModel.insertPredmet(predmetWithOcjene)
 
                         interAD?.show(requireActivity())
                         findNavController().navigateUp()
@@ -108,12 +112,17 @@ class AddPredmetFragment : Fragment() {
 
     }
 
-    fun parseOcjeneFromInput(ocjeneInput: EditText): ArrayList<Int> {
+    fun parseOcjeneFromInput(ocjeneInput: EditText): ArrayList<Ocjena> {
 
         val charArr = ocjeneInput.text.toString().toCharArray()
-        val ocjeneArray = ArrayList<Int>()
+        val ocjeneArray = ArrayList<Ocjena>()
 
-        charArr.forEach { ocjeneArray.add(Character.getNumericValue(it)) }
+        charArr.forEachIndexed { index, c ->
+            ocjeneArray.add(
+                Ocjena(ocjena = c.toString().toInt()))
+            Log.d("TAG", "parseOcjeneFromInput: OCJENA ${ocjeneArray[index].ocjena}")
+        }
+
 
         return ocjeneArray
     }

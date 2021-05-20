@@ -1,9 +1,13 @@
 package com.electrocoder.grader.entities
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 /**
  * Entity predmeta.
@@ -11,16 +15,22 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "tabela_predmeta")
+@Parcelize
 data class Predmet(
-    @PrimaryKey(autoGenerate = true) var id:Int? = null,
-    var imePredmeta: String,
-    var ocjene: ArrayList<Int> = arrayListOf(),
-    var prosjek: Double = 0.00,
-    var zakazanTest: MutableLiveData<Boolean> = MutableLiveData(false)) {
+    @ColumnInfo(name = "predmet_id")
+    @PrimaryKey(autoGenerate = true)
+    var id:Long = 0,
+
+    var imePredmeta: String = "",
+    //var ocjene: ArrayList<Int> = arrayListOf(),
+    //var prosjek: Double = 0.00,
+
+    var zakazanTest: @RawValue MutableLiveData<Boolean> = MutableLiveData(false)
+) : Parcelable {
 
     //@PrimaryKey(autoGenerate = true)
     //var id:Int = 0
-    constructor():this(null,"", arrayListOf())
+    /*constructor():this(null,"", arrayListOf())
 
     init {
         prosjek = calculateProsjekPredmeta(ocjene)
@@ -36,6 +46,6 @@ data class Predmet(
             }
             return prosjek / brojOcjena.toDouble()
         } else return prosjek
-    }
+    }*/
 
 }

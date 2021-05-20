@@ -11,25 +11,51 @@ import androidx.recyclerview.widget.RecyclerView
 import com.electrocoder.grader.R
 import com.electrocoder.grader.databinding.PredmetItemBinding
 import com.electrocoder.grader.entities.Predmet
+import com.electrocoder.grader.entities.PredmetWithOcjena
 import com.electrocoder.grader.util.Constants
 import com.electrocoder.grader.util.PredmetUtilFunctions
 import com.google.android.material.card.MaterialCardView
 
 //import kotlinx.android.synthetic.main.predmet_item.view.*
 
-class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, PredmetiRecyclerAdapter.ViewHolder>(DiffCallback()) {
+class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<PredmetWithOcjena, PredmetiRecyclerAdapter.ViewHolder>(DiffCallback()) {
 
     lateinit var predmetClickListener: OnPredmetClickListener
     interface OnPredmetClickListener {
-        fun onPredmetClicked(predmet: Predmet, prosjekText: TextView, backgroundCard: MaterialCardView, pozicija: Int)
+        fun onPredmetClicked(predmet: PredmetWithOcjena, prosjekText: TextView, backgroundCard: MaterialCardView, idPredmeta: Long)
         fun onPredmetLongClicked(view: View, predmet: Predmet)
-        fun onContextMenuClicked(predmet: Predmet, opcija: Constants.CONTEXT_MENU_OPTIONS)
+        fun onContextMenuClicked(predmet: PredmetWithOcjena, opcija: Constants.CONTEXT_MENU_OPTIONS)
     }
 
 
-    class DiffCallback : DiffUtil.ItemCallback<Predmet>() {
+    class DiffCallback : DiffUtil.ItemCallback<PredmetWithOcjena>() {
 
-        override fun areItemsTheSame(oldItem: Predmet, newItem: Predmet): Boolean {
+        override fun areItemsTheSame(
+            oldItem: PredmetWithOcjena,
+            newItem: PredmetWithOcjena
+        ): Boolean {
+            return oldItem.predmet.id == newItem.predmet.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: PredmetWithOcjena,
+            newItem: PredmetWithOcjena
+        ): Boolean {
+            return oldItem.predmet.imePredmeta.equals(newItem.predmet.imePredmeta) &&
+                    oldItem.ocjene.equals(newItem.ocjene) &&
+                    oldItem.prosjek == newItem.prosjek
+
+
+        }
+
+        override fun getChangePayload(
+            oldItem: PredmetWithOcjena,
+            newItem: PredmetWithOcjena
+        ): Any? {
+            return super.getChangePayload(oldItem, newItem)
+        }
+
+        /*override fun areItemsTheSame(oldItem: Predmet, newItem: Predmet): Boolean {
             return oldItem.id == newItem.id
         }
 
@@ -37,7 +63,7 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
             return oldItem.imePredmeta.equals(newItem.imePredmeta) &&
                     oldItem.ocjene.equals(newItem.ocjene) &&
                     oldItem.prosjek == newItem.prosjek
-        }
+        }*/
 
     }
 
@@ -57,7 +83,7 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        var predmet: Predmet = getItem(position)
+        var predmet: PredmetWithOcjena = getItem(position)
 
         holder.populateData(predmet)
 
@@ -75,10 +101,10 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
         var predmetCard: MaterialCardView
         var opcijePredmeta: ImageButton
 
-        fun populateData(predmet: Predmet) {
+        fun populateData(predmet: PredmetWithOcjena) {
 
-            binding.imePredmetaText.text = predmet.imePredmeta
-            binding.prosjekPredmetaText.text = String.format("%.2f", predmet.prosjek)
+            binding.imePredmetaText.text = predmet.predmet.imePredmeta
+            binding.prosjekPredmetaText.text = String.format("%.2f", PredmetUtilFunctions.calculateProsjek(predmet.ocjene))
             binding.prosjekPredmetaText.transitionName = "prosjekText_$position"
 
             val bojaPredmeta = PredmetUtilFunctions.returnColorBasedOnOcjena(
@@ -92,6 +118,11 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
                 PredmetUtilFunctions.returnAlphedColor(bojaPredmeta)
             )
 
+            binding.predmetBackgroundCard.setOnClickListener {
+                val position = adapterPosition
+                predmetClickListener.onPredmetClicked(getItem(position), prosjek, predmetCard, predmet.predmet.id)
+            }
+
         }
 
         init {
@@ -100,10 +131,7 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
             predmetCard = itemView.findViewById(R.id.predmetBackgroundCard)
             opcijePredmeta = itemView.findViewById(R.id.opcijePredmetaBtn)
 
-            itemView.setOnClickListener {
-                val position = adapterPosition
-                predmetClickListener.onPredmetClicked(getItem(position), prosjek, predmetCard, position)
-            }
+
 
             opcijePredmeta.setOnClickListener {
 
@@ -153,7 +181,8 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<Predmet, Predm
 
 
 
-    fun getPredmetAt(position: Int): Predmet {
+
+    fun getPredmetAt(position: Int): PredmetWithOcjena {
         return getItem(position)
     }
 

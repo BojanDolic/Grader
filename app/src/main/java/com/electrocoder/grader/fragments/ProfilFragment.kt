@@ -9,11 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.electrocoder.grader.PredmetiViewModel
 
 import com.electrocoder.grader.R
 import com.electrocoder.grader.databinding.FragmentProfilBinding
 import com.electrocoder.grader.databinding.PredmetiFragmentBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 class ProfilFragment : Fragment() {
@@ -41,8 +45,10 @@ class ProfilFragment : Fragment() {
         var sumaOcjena = 0
         var brojPredmeta = 0
 
+        var prosjek = 0.0f
+
         viewModel.getAllPredmete().observe(viewLifecycleOwner, Observer {
-            it.forEach {
+            /*it.forEach {
                 sumaOcjena += it.prosjek.roundToInt()
                 if(it.prosjek > 0.0)
                     brojPredmeta++;
@@ -54,8 +60,19 @@ class ProfilFragment : Fragment() {
             var prosjek = 0.0f
             if(brojPredmeta > 0) {
                 prosjek = sumaOcjena / brojPredmeta.toFloat()
+            }*/
+
+            lifecycleScope.launch {
+
+                prosjek = viewModel.getProsjekPredmeta()
+
+                withContext(Dispatchers.Main) {
+                    binding.profilProsjekOcjena.text = String.format("%.2f", prosjek)
+                }
+
             }
-            binding.profilProsjekOcjena.text = String.format("%.2f", prosjek)
+
+
         })
 
 
