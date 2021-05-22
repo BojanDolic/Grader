@@ -18,11 +18,11 @@ data class PredmetWithOcjena(
     )
     var ocjene: MutableList<Ocjena> = mutableListOf(),
 
-    @Ignore var prosjek: Double = 0.0
+    @Ignore var prosjek: Double = PredmetUtilFunctions.calculateProsjek(ocjene)
 ) : Parcelable {
 
     init {
-        this.prosjek = PredmetUtilFunctions.calculateProsjek(ocjene)
+        //this.prosjek = PredmetUtilFunctions.calculateProsjek(ocjene)
         Log.d("TAG", "PREDMET WITH OCJENA INIT: PROSJEK - ${this.prosjek}")
     }
 }

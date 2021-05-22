@@ -17,15 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.AutoTransition
 import androidx.work.*
 import com.electrocoder.grader.PredmetiViewModel
 import com.electrocoder.grader.R
 import com.electrocoder.grader.adapters.OcjenePredmetaRecyclerAdapter
 import com.electrocoder.grader.databinding.FragmentPredmetBinding
-import com.electrocoder.grader.databinding.PredmetiFragmentBinding
 import com.electrocoder.grader.entities.Ocjena
-import com.electrocoder.grader.entities.Predmet
 import com.electrocoder.grader.entities.PredmetWithOcjena
 import com.electrocoder.grader.util.Constants
 import com.electrocoder.grader.util.PodsjetnikTestWorker
@@ -35,7 +32,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -69,7 +65,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        predmet = args.izabranPredmet
+        //predmet = args.izabranPredmet
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
         Log.d("ID", "onCreate: $idPredmeta")
         //sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
@@ -79,7 +75,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPredmetBinding.inflate(inflater, container, false)
 
@@ -119,99 +115,25 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.predmetOcjeneRecycler.layoutManager = GridLayoutManager(context, 3)
         binding.predmetOcjeneRecycler.adapter = ocjeneAdapter
 
-        /*predmet?.let { predmet ->
-
-            ocjeneAdapter.updateList(predmet.ocjene)
-
-            binding.predmetProsjekOcjena.text = String.format("%.2f", predmet.prosjek)
-
-            predmet?.predmet.zakazanTest.observe(viewLifecycleOwner, Observer {
-
-                if(it) {
-                    TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
-                    binding.izbrisiPodsjetnikBtn.visibility = View.VISIBLE
-                } else {
-                    TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
-                    binding.izbrisiPodsjetnikBtn.visibility = View.GONE
-                }
-
-            })
-
-            *//**
-             * Ako je aplikacija aktivna gledamo stanje workmanagera
-             * Ako u tom trenutku stigne zadnja notifikacija, automatski setujemo zakazan test predmeta na false
-             *//*
-
-            WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData(predmet.predmet.imePredmeta + "1").observe(viewLifecycleOwner, Observer {
-
-                if(it.size > 0)
-                    if(it.get(0).state.isFinished) {
-                        predmet.predmet.zakazanTest.value = false
-                        predmetiViewModel.updatePredmet(predmet.predmet)
-                    }
-
-            })
-
-
-
-
-
-        }*/
-
-
-
         binding.izbrisiPodsjetnikBtn.setOnClickListener { cancelPodsjetnikTesta() }
 
         predmetiViewModel.getPredmet(idPredmeta).observe(viewLifecycleOwner, { predmet ->
-
-            
-
             predmet?.let {
 
                 binding.predmetProsjekOcjena.text = String.format("%.2f", PredmetUtilFunctions.calculateProsjek(predmet.ocjene))
 
                 ocjeneAdapter.updateList(predmet.ocjene)
 
-
                 addFabButtons(predmet)
-
+                addTestObserver(predmet)
 
 
             } ?: run {
                 // If predmet is null we show message to the user and exit the fragment
-                Toast.makeText(requireContext(), "Problem prilikom učitavanja predmeta!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.predmet_loading_error), Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
         })
-
-        /*predmetiViewModel.getPredmet(idPredmeta).observe(viewLifecycleOwner, { predmetWithOcjene ->
-
-            predmetWithOcjene?.let {
-                predmet = it
-                ocjeneAdapter.updateList(it.ocjene)
-
-
-
-                predmet?.predmet.zakazanTest.observe(viewLifecycleOwner, Observer {
-
-                    if(it) {
-                        TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
-                        binding.izbrisiPodsjetnikBtn.visibility = View.VISIBLE
-                    } else {
-                        TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
-                        binding.izbrisiPodsjetnikBtn.visibility = View.GONE
-                    }
-
-                })
-            }
-
-        })*/
-
-        /*predmet = predmetiViewModel.getPredmet(idPredmeta)
-        ocjeneAdapter.updateList(predmet.ocjene)*/
-
-
-
 
         binding.expandOcjeneContainerBtn.setOnClickListener {
 
@@ -231,16 +153,50 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         }
 
+    }
 
+    /**
+     * Function which observes subject's field "zakazanTest"
+     * This field indicates if there is a test notification set.
+     *
+     * @param predmet subject which field is observed
+     */
+    private fun addTestObserver(predmet: PredmetWithOcjena) {
 
+        predmet.predmet.zakazanTest.observe(viewLifecycleOwner, { zakazan ->
 
+            if(zakazan) {
+                TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
+                binding.izbrisiPodsjetnikBtn.visibility = View.VISIBLE
+            } else {
+                TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
+                binding.izbrisiPodsjetnikBtn.visibility = View.GONE
+            }
 
-        /*binding.dodajOcjenuPredmetaBtn.setOnClickListener({
-            openAddOcjenuDialog()
-        })*/
+        })
+
+        /**
+        * Ako je aplikacija aktivna gledamo stanje workmanagera
+        * Ako u tom trenutku stigne zadnja notifikacija, automatski setujemo zakazan test predmeta na false
+        **/
+
+        WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData(predmet.predmet.imePredmeta + "1").observe(viewLifecycleOwner, {
+
+            if(it.size > 0)
+                if(it.get(0).state.isFinished) {
+                    predmet.predmet.zakazanTest.value = false
+                    predmetiViewModel.updatePredmet(predmet.predmet)
+                }
+
+        })
 
     }
 
+    /**
+     * Function which initializes FAB's and reacts to actions
+     *
+     * @param predmet used for reacting on fab action
+     */
     private fun addFabButtons(predmet: PredmetWithOcjena) {
         binding.speedDialFab.addActionItem(
             SpeedDialActionItem.Builder(R.id.dodajOcjenuFab, R.drawable.icon_add)
@@ -257,6 +213,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 .create()
         )
 
+        // Reacting to actions
         binding.speedDialFab.setOnActionSelectedListener(SpeedDialView.OnActionSelectedListener {
             when (it.id) {
                 R.id.dodajOcjenuFab -> {
@@ -311,16 +268,20 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         MaterialAlertDialogBuilder(requireContext())
             .setView(customView)
             .setTitle("Dodajte ocjenu")
-            .setPositiveButton("Dodaj", DialogInterface.OnClickListener { dialog, which ->
+            .setPositiveButton("Dodaj") { dialog, which ->
 
                 val text = ocjenaInput.text.toString().trim()
 
-                if(!text.isBlank() && !text.isEmpty()) {
+                if (!text.isBlank() && !text.isEmpty()) {
                     val ocjenaValue = ocjenaInput.text.toString().toInt()
 
                     interAD?.show(requireActivity())
 
-                    val ocjena = Ocjena(ocjena = ocjenaValue, datumOcjene = Date(), predmetId = predmet?.predmet?.id!!)
+                    val ocjena = Ocjena(
+                        ocjena = ocjenaValue,
+                        datumOcjene = Date(),
+                        predmetId = predmet?.predmet?.id!!
+                    )
 
                     Log.d("TAG", "openAddOcjenuDialog: DEBUG OCJENA $ocjena")
 
@@ -332,15 +293,19 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     ocjeneAdapter.updateList(predmet?.ocjene!!)*/
                     //binding.predmetProsjekOcjena.text = String.format("%.2f", predmet.calculateProsjekPredmeta(predmet.ocjene))
 
-                    val snackbar = Snackbar.make(binding.speedDialFab, "Dodali ste ocjenu $ocjena", Snackbar.LENGTH_SHORT)
+                    val snackbar = Snackbar.make(
+                        binding.speedDialFab,
+                        "Dodali ste ocjenu $ocjena",
+                        Snackbar.LENGTH_SHORT
+                    )
                     snackbar.anchorView = binding.speedDialFab
                     snackbar.show()
                 } else {
                     ocjenaInputLayout.error = "Morate unijeti ocjenu"
                 }
 
-            })
-            .setNegativeButton("Zatvori", DialogInterface.OnClickListener { dialog, which ->  })
+            }
+            .setNegativeButton("Zatvori") { dialog, which ->  }
             .show()
 
     }
@@ -355,7 +320,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         predmet?.let { predmet ->
 
 
-        if(!predmet?.predmet?.zakazanTest?.value!!) {
+        if(!predmet.predmet.zakazanTest.value!!) {
 
             val calendar = Calendar.getInstance()
             val currentTime = calendar.timeInMillis
@@ -396,7 +361,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                         .build()
 
                     val workRequest: WorkRequest = OneTimeWorkRequestBuilder<PodsjetnikTestWorker>()
-                        .addTag(predmet?.predmet?.imePredmeta + "7")
+                        .addTag(predmet.predmet.imePredmeta + "7")
                         .setInputData(inputData)
                         .setInitialDelay(prviPodsjetnikDana, TimeUnit.DAYS)
                         .build()
@@ -407,7 +372,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
 
                 val inputData: Data = Data.Builder()
-                    .putString(Constants.IME_PREDMETA_TAG, predmet?.predmet?.imePredmeta)
+                    .putString(Constants.IME_PREDMETA_TAG, predmet.predmet.imePredmeta)
                     .putInt(Constants.PODSJETNIK_TESTA_TEXT, Constants.DRUGI_PODSJETNIK_TESTA_ID)
                     .build()
 

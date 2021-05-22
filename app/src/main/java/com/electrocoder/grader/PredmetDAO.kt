@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.flow
 interface PredmetDAO {
 
     /**
-     * Function returns long which is the id of the inserted predmet
-     *
+     * Function returns long which is the id of the inserted object (predmet)
      * @see https://developer.android.com/training/data-storage/room/accessing-data#convenience-insert
+     *
      */
     @Insert
     fun insertPredmet(predmet: Predmet): Long
@@ -60,8 +60,8 @@ interface PredmetDAO {
     @Query("SELECT * FROM tabela_predmeta WHERE predmet_id = :idPredmeta")
     fun getPredmet(idPredmeta: Long): Flow<Predmet>
 
-    @Transaction
-    @Query("SELECT * FROM tabela_predmeta WHERE predmet_id = :idPredmeta IN (SELECT DISTINCT(predmet_id) FROM tabela_ocjena)")
+    @Transaction // IN (SELECT DISTINCT(predmet_id) FROM tabela_ocjena)
+    @Query("SELECT * FROM tabela_predmeta WHERE predmet_id = :idPredmeta")
     fun getPredmetWithOcjene(idPredmeta: Long): Flow<PredmetWithOcjena>
 
     @Query("SELECT * FROM tabela_ocjena WHERE predmet_id = :idPredmeta")
@@ -73,7 +73,7 @@ interface PredmetDAO {
     fun getPredmetiCount(): Int
 
     // Calculates average for all subjects
-    @Query("SELECT AVG(ocjena) FROM tabela_ocjena")
+    @Query("SELECT AVG(prosjek) FROM ( SELECT AVG(ocjena) AS prosjek FROM tabela_ocjena GROUP BY predmet_id )")
     fun getPredmetiProsjek(): Float
 
     @Transaction
@@ -88,7 +88,7 @@ interface PredmetDAO {
     fun clearOcjeneAllPredmeta()
 
     // Clears marks from particular subject
-    @Query("DELETE FROM tabela_ocjena WHERE ocjenaId = :idPredmeta")
+    @Query("DELETE FROM tabela_ocjena WHERE predmet_id = :idPredmeta")
     suspend fun clearOcjenePredmeta(idPredmeta: Long)
 
 

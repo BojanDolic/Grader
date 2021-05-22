@@ -29,11 +29,13 @@
         \n- Izmjene oko tekstova
         \n- Izmijenjen izgled predmet item-a
         \n- Dodane popup meni opcije za predmete</string>
+ 
     <string name="prijavite_gresku_text">Prijavite grešku</string>
     <string name="prijavi_text">PRIJAVI</string>
     <string name="bug_report_hint_text">Detaljno opišite grešku koju ste pronašli</string>
     <string name="bug_report_napomena_text">
         <b>Napomena:</b> Svaka prijava koja ne sadrži odgovarajući naslov, te informacije o uređaju biće automatski odbijena.</string>
     <string name="izbrisi_podsjetnik_text">Izbriši podsjetnik</string>
+    <string name="predmet_loading_error">Problem prilikom učitavanja predmeta!</string>
 
 </resources>

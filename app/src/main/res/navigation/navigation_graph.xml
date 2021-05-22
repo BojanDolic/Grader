@@ -32,10 +32,6 @@
             app:popUpTo="@id/predmetiFragment" >
 
             <argument
-                android:name="izabranPredmet"
-                app:argType="com.electrocoder.grader.entities.PredmetWithOcjena"/>
-
-            <argument
                 android:name="pozicija"
                 app:argType="integer" />
 
@@ -90,11 +86,6 @@
         tools:layout="@layout/fragment_predmet"
         android:label="{imePredmeta}">
 
-        <argument
-            android:name="izabranPredmet"
-            app:argType="com.electrocoder.grader.entities.PredmetWithOcjena"
-            app:nullable="true"
-            android:defaultValue="@null" />
 
         <argument
             android:name="pozicija"

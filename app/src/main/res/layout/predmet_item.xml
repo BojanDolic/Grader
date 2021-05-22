@@ -19,7 +19,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/prosjekPredmetaContainer"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
             android:gravity="center"
             app:cardBackgroundColor="#26FF9E0E"

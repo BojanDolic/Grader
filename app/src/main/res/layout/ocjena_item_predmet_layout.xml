@@ -23,7 +23,7 @@
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -32,11 +32,11 @@
             android:layout_height="wrap_content"
             android:text="11 maj 2021"
             android:fontFamily="@font/manrope_light"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ocjena_item_ocjena_text"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="9dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
