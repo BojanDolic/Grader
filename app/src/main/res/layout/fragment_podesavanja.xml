@@ -70,7 +70,7 @@
                         app:iconSize="32dp"
                         android:textAlignment="viewStart"
                         app:iconPadding="24dp"
-                        android:fontFamily="@font/manrope_bold"
+                        android:fontFamily="@font/manrope_extrabold"
                         style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
                     <com.google.android.material.button.MaterialButton
@@ -79,6 +79,7 @@
                         android:layout_height="wrap_content"
                         app:icon="@drawable/close_icon"
                         android:text="Obriši ocjene predmeta"
+                        android:fontFamily="@font/manrope_extrabold"
                         app:iconTint="@color/red"
                         app:iconSize="32dp"
                         app:iconPadding="24dp"
@@ -127,6 +128,7 @@
                         app:iconSize="32dp"
                         app:iconPadding="24dp"
                         android:text="O aplikaciji"
+                        android:fontFamily="@font/manrope_extrabold"
                         style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
 
@@ -140,6 +142,7 @@
                         app:iconSize="32dp"
                         app:iconPadding="24dp"
                         android:text="Prijavi grešku"
+                        android:fontFamily="@font/manrope_extrabold"
                         style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
 

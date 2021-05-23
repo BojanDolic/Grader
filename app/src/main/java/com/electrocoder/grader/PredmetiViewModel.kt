@@ -79,6 +79,12 @@ class PredmetiViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun deleteOcjenu(ocjena: Ocjena) {
+        viewModelScope.launch {
+            predmetiRepo.deleteOcjenu(ocjena)
+        }
+    }
+
     fun getPredmetiProsjekSum(): Float = predmetiRepo.getPredmetiProsjek()
 
     fun deleteAllPredmete() {

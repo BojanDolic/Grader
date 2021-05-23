@@ -54,6 +54,9 @@ interface PredmetDAO {
     @Delete
     suspend fun deletePredmet(predmet: Predmet)
 
+    @Delete
+    suspend fun deleteOcjenu(ocjena: Ocjena)
+
     @Query("DELETE FROM tabela_predmeta")
     suspend fun deleteAllPredmete()
 

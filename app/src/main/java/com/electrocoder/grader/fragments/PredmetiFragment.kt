@@ -102,7 +102,6 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
 
             /**
              * Ako korisnik prevuče predmet ka lijevo, predmet se briše
-             * Prije brisanja moramo
              */
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val predmet = predmetiRecyclerAdapter.getPredmetAt(viewHolder.adapterPosition)
@@ -187,7 +186,6 @@ class PredmetiFragment : Fragment(), PredmetiRecyclerAdapter.OnPredmetClickListe
         Log.d("TAG", "onPredmetClicked: ID PREDMETA: $idPredmeta")
 
         val action = PredmetiFragmentDirections.actionPredmetiFragmentToPredmetFragment(
-            predmet,
             0,
             predmet.predmet.imePredmeta,
             idPredmeta

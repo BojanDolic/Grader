@@ -46,7 +46,9 @@ import java.util.concurrent.TimeUnit
 
 private const val TAG = "PredmetFragment"
 
-class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class PredmetFragment : Fragment(),
+    DatePickerDialog.OnDateSetListener,
+    OcjenePredmetaRecyclerAdapter.OnOcjenaClickListener {
 
 
     private var _binding: FragmentPredmetBinding? = null
@@ -93,6 +95,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             })
 
+        postponeEnterTransition()
         return binding.root
 
     }
@@ -102,6 +105,8 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         //idPredmeta = PredmetFragmentArgs.fromBundle(requireArguments()).izabranPredmet
 
+        startPostponedEnterTransition()
+        
         idPredmeta = args.idPredmeta
 
         val pozicijaPredmeta = PredmetFragmentArgs.fromBundle(requireArguments()).pozicija
@@ -112,6 +117,7 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         /** Podešavanje adaptera i layout managera i prikaz ocjena preko recyclerview-a **/
         ocjeneAdapter = OcjenePredmetaRecyclerAdapter()
+        ocjeneAdapter.setOcjenaClickListener(this)
         binding.predmetOcjeneRecycler.layoutManager = GridLayoutManager(context, 3)
         binding.predmetOcjeneRecycler.adapter = ocjeneAdapter
 
@@ -119,6 +125,8 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         predmetiViewModel.getPredmet(idPredmeta).observe(viewLifecycleOwner, { predmet ->
             predmet?.let {
+
+                this.predmet = predmet
 
                 binding.predmetProsjekOcjena.text = String.format("%.2f", PredmetUtilFunctions.calculateProsjek(predmet.ocjene))
 
@@ -166,10 +174,8 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         predmet.predmet.zakazanTest.observe(viewLifecycleOwner, { zakazan ->
 
             if(zakazan) {
-                TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
                 binding.izbrisiPodsjetnikBtn.visibility = View.VISIBLE
             } else {
-                TransitionManager.beginDelayedTransition(binding.root, android.transition.AutoTransition())
                 binding.izbrisiPodsjetnikBtn.visibility = View.GONE
             }
 
@@ -233,6 +239,23 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         })
     }
 
+
+    override fun onOcjenaLongClicked(ocjena: Ocjena) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Obrisati ocjenu ?")
+            .setMessage("Da li ste sigurni da želite obrisati ocjenu: ${ocjena.ocjena} ?")
+            .setPositiveButton("Obriši") { dialogInterface: DialogInterface, i: Int ->
+                predmetiViewModel.deleteOcjenu(ocjena)
+                Toast.makeText(
+                    requireContext(),
+                    "Ocjena izbrisana",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .setNegativeButton("Odustani") { _, _ ->  }
+            .show()
+    }
+
     fun openDatePickerDialog() {
 
         val calendar = Calendar.getInstance()
@@ -247,15 +270,22 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     fun cancelPodsjetnikTesta() {
 
-        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(predmet?.predmet?.imePredmeta + "1")
-        WorkManager.getInstance(requireContext()).cancelAllWorkByTag(predmet?.predmet?.imePredmeta + "7")
+        predmet?.let {
 
-        predmet?.predmet?.zakazanTest?.value = false
-        predmetiViewModel.updatePredmet(predmet?.predmet!!)
+            WorkManager.getInstance(requireContext()).cancelAllWorkByTag(predmet?.predmet?.imePredmeta + "1")
+            WorkManager.getInstance(requireContext()).cancelAllWorkByTag(predmet?.predmet?.imePredmeta + "7")
 
-        val snackbar2 = Snackbar.make(binding.speedDialFab, "Test otkazan", Snackbar.LENGTH_SHORT)
-        snackbar2.anchorView = binding.speedDialFab
-        snackbar2.show()
+            predmet?.predmet?.zakazanTest?.value = false
+            predmetiViewModel.updatePredmet(predmet?.predmet!!)
+
+            val snackbar2 = Snackbar.make(binding.speedDialFab, "Test otkazan", Snackbar.LENGTH_SHORT)
+            snackbar2.anchorView = binding.speedDialFab
+            snackbar2.show()
+
+        } ?: run {
+
+        }
+
 
     }
 
@@ -273,33 +303,42 @@ class PredmetFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 val text = ocjenaInput.text.toString().trim()
 
                 if (!text.isBlank() && !text.isEmpty()) {
-                    val ocjenaValue = ocjenaInput.text.toString().toInt()
 
-                    interAD?.show(requireActivity())
+                    predmet?.let {
 
-                    val ocjena = Ocjena(
-                        ocjena = ocjenaValue,
-                        datumOcjene = Date(),
-                        predmetId = predmet?.predmet?.id!!
-                    )
+                        val ocjenaValue = ocjenaInput.text.toString().toInt()
 
-                    Log.d("TAG", "openAddOcjenuDialog: DEBUG OCJENA $ocjena")
+                        interAD?.show(requireActivity())
 
-                    predmetiViewModel.insertOcjena(ocjena)
+                        val ocjena = Ocjena(
+                            ocjena = ocjenaValue,
+                            datumOcjene = Date(),
+                            predmetId = it.predmet.id
+                        )
 
-                    /*predmet?.ocjene?.add(ocjena)
+                        Log.d("TAG", "openAddOcjenuDialog: DEBUG OCJENA $ocjena")
 
-                    predmetiViewModel.updateOcjenePredmeta(predmet!!)
-                    ocjeneAdapter.updateList(predmet?.ocjene!!)*/
-                    //binding.predmetProsjekOcjena.text = String.format("%.2f", predmet.calculateProsjekPredmeta(predmet.ocjene))
+                        predmetiViewModel.insertOcjena(ocjena)
 
-                    val snackbar = Snackbar.make(
-                        binding.speedDialFab,
-                        "Dodali ste ocjenu $ocjena",
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.anchorView = binding.speedDialFab
-                    snackbar.show()
+                        /*predmet?.ocjene?.add(ocjena)
+
+                        predmetiViewModel.updateOcjenePredmeta(predmet!!)
+                        ocjeneAdapter.updateList(predmet?.ocjene!!)*/
+                        //binding.predmetProsjekOcjena.text = String.format("%.2f", predmet.calculateProsjekPredmeta(predmet.ocjene))
+
+                        val snackbar = Snackbar.make(
+                            binding.speedDialFab,
+                            "Dodali ste ocjenu $ocjena",
+                            Snackbar.LENGTH_SHORT
+                        )
+                        snackbar.anchorView = binding.speedDialFab
+                        snackbar.show()
+
+                    } ?: run { Toast.makeText(
+                        requireContext(),
+                        "Greška pri dodavanju ocjene !",
+                        Toast.LENGTH_SHORT
+                    ).show() }
                 } else {
                     ocjenaInputLayout.error = "Morate unijeti ocjenu"
                 }

@@ -45,6 +45,10 @@ class PredmetiRepo(application: Application) : CoroutineScope {
         predmetiDAO?.deletePredmet(predmet)
     }
 
+    suspend fun deleteOcjenu(ocjena: Ocjena) {
+        predmetiDAO?.deleteOcjenu(ocjena)
+    }
+
     suspend fun deleteAllPredmete() {
         predmetiDAO?.deleteAllPredmete()
     }

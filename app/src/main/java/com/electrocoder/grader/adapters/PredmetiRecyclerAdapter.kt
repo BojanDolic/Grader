@@ -96,20 +96,22 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<PredmetWithOcj
 
     inner class ViewHolder(val binding: PredmetItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        var prosjek: TextView
+        var prosjekText: TextView
         var imePredmeta: TextView
         var predmetCard: MaterialCardView
         var opcijePredmeta: ImageButton
 
         fun populateData(predmet: PredmetWithOcjena) {
 
+            val prosjek = PredmetUtilFunctions.calculateProsjek(predmet.ocjene)
+
             binding.imePredmetaText.text = predmet.predmet.imePredmeta
-            binding.prosjekPredmetaText.text = String.format("%.2f", PredmetUtilFunctions.calculateProsjek(predmet.ocjene))
+            binding.prosjekPredmetaText.text = String.format("%.2f", prosjek)
             binding.prosjekPredmetaText.transitionName = "prosjekText_$position"
 
             val bojaPredmeta = PredmetUtilFunctions.returnColorBasedOnOcjena(
                 binding.root.context,
-                predmet.prosjek.toInt()
+                prosjek.toInt()
             )
 
             binding.prosjekPredmetaText.setTextColor(bojaPredmeta)
@@ -120,14 +122,14 @@ class PredmetiRecyclerAdapter(val context: Context) : ListAdapter<PredmetWithOcj
 
             binding.predmetBackgroundCard.setOnClickListener {
                 val position = adapterPosition
-                predmetClickListener.onPredmetClicked(getItem(position), prosjek, predmetCard, predmet.predmet.id)
+                predmetClickListener.onPredmetClicked(getItem(position), prosjekText, predmetCard, predmet.predmet.id)
             }
 
         }
 
         init {
             imePredmeta = itemView.findViewById(R.id.imePredmetaText)
-            prosjek = itemView.findViewById(R.id.prosjekPredmetaText)
+            prosjekText = itemView.findViewById(R.id.prosjekPredmetaText)
             predmetCard = itemView.findViewById(R.id.predmetBackgroundCard)
             opcijePredmeta = itemView.findViewById(R.id.opcijePredmetaBtn)
 
