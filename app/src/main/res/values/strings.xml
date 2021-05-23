@@ -16,11 +16,11 @@
     <string name="verzija_aplikacije">v1.1</string>
     <string name="autor_aplikacije_text">Autor aplikacije:</string>
     <string name="autor_aplikacije">Bojan Dolić</string>
-    <string name="verzija_aplikacije_changelog">- Prerađeno čuvanje ocjena
-        - Optimizacija aplikacije
-        - Unaprijeđen dizajn aplikacije
-        - Mogućnost brisanja pojedinih ocjena
-        - Popravljene pronađene greške</string>
+    <string name="verzija_aplikacije_changelog">- Novi sistem čuvanja ocjena
+       \n- Optimizacija aplikacije
+       \n- Unaprijeđen dizajn aplikacije
+       \n- Mogućnost brisanja pojedinih ocjena
+       \n- Popravljene pronađene greške</string>
     <string name="prijavite_gresku_text">Prijavite grešku</string>
     <string name="prijavi_text">PRIJAVI</string>
     <string name="bug_report_hint_text">Detaljno opišite grešku koju ste pronašli</string>
