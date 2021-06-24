@@ -10,9 +10,19 @@ Application is built with Kotlin language and it's using following technologies:
 * ViewModel
 * Room
 
-Application stores student's subjects and grades in Room database. 
-It simplifies grade median calculation and it contains functionality where students can set remainder for upcoming tests.
+Application stores student's subjects and grades in a database. 
+It simplifies grade average calculation and it contains functionality where students can set remainder for upcoming tests.
 
+Subject creation is simplified and user friendly because student can include grades he already got.
+Grades can be added with simple two step process, and deleted individually for every subject.
+
+# Architecture
+
+Grader uses MVVM design pattern.
+Underlaying layer consists of Room database with two tables for storing subjects and grades.
+
+Through the repository, the application retrieves data into the ViewModel class which is connected to the corresponding fragment.
+The application utilizes LiveData class through which it observes changes in the database layer and acts accordingly.
 
 # Screenshots
 <p float="left">
