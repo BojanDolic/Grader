@@ -19,6 +19,9 @@ Grades can be added with simple two step process, and deleted individually for e
 # Architecture
 
 Grader uses MVVM design pattern.
+
+<img src="https://developer.android.com/codelabs/android-room-with-a-view/img/a7da8f5ea91bac52.png?hl=th" width=500>
+
 Underlaying layer consists of Room database with two tables for storing subjects and grades.
 
 Through the repository, the application retrieves data into the ViewModel class which is connected to the corresponding fragment.
