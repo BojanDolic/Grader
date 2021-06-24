@@ -18,14 +18,18 @@ Grades can be added with simple two step process, and deleted individually for e
 
 # Architecture
 
-Grader uses MVVM design pattern.
+Grader uses **MVVM design pattern.**
 
 <img src="https://miro.medium.com/max/960/0*r6tfHpmMPZYLstfz.png" width=700>
 
 Underlaying layer consists of Room database with two tables for storing subjects and grades.
 
 Through the repository, the application retrieves data into the ViewModel class which is connected to the corresponding fragment.
+The repository layer only communicates with the Room database, or in other words, it has a single source of truth.
+
 The application utilizes LiveData class through which it observes changes in the database layer and acts accordingly.
+
+Navigation of the Grader application is handled with **Navigation Component**. Every screen is represented by the corresponding fragment which is connected with other fragments through navigation graph. Navigation graph is set of fragments.
 
 # Screenshots
 <p float="left">
