@@ -20,7 +20,7 @@ Grades can be added with simple two step process, and deleted individually for e
 
 Grader uses MVVM design pattern.
 
-<img src="https://developer.android.com/codelabs/android-room-with-a-view/img/a7da8f5ea91bac52.png?hl=th" width=500>
+<img src="https://miro.medium.com/max/960/0*r6tfHpmMPZYLstfz.png" width=700>
 
 Underlaying layer consists of Room database with two tables for storing subjects and grades.
 
