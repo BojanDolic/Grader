@@ -18,13 +18,13 @@ It simplifies grade median calculation and it contains functionality where stude
 <p float="left">
 <img src="https://i.imgur.com/ydgxTrk.png" width="300">
 
-<img src="https://i.imgur.com/xNW2u4S.png" width="300">
+<img src="https://i.imgur.com/N5ZlNRR.png" width="300">
 </p>
 
 <p float="left">
-<img src="https://i.imgur.com/ml2hU81.png" width="300">
+<img src="https://i.imgur.com/2z0MyB2.png" width="300">
 
-<img src="https://i.imgur.com/7mxCWaQ.png" width="300">
+<img src="https://i.imgur.com/Uep7l4B.png" width="300">
 </p>
 
 # Installation
