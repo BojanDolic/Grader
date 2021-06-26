@@ -29,7 +29,7 @@ The repository layer only communicates with the Room database, or in other words
 
 The application utilizes LiveData class through which it observes changes in the database layer and acts accordingly.
 
-Navigation of the Grader application is handled with **Navigation Component**. Every screen is represented by the corresponding fragment which is connected with other fragments through navigation graph. Navigation graph is set of fragments.
+Navigation of the Grader application is handled with **Navigation Component**. Every screen is represented by the corresponding fragment which is connected with other fragments through navigation graph. Navigation graph is, in this case, a set of fragments. It is a resource file containing all destinations and actions.
 
 # Screenshots
 <p float="left">
