@@ -18,7 +18,7 @@ Grades can be added with simple two step process, and deleted individually for e
 
 # Architecture
 
-Grader uses **MVVM design pattern.**
+Grader uses **MVVM architecture.**
 
 <img src="https://miro.medium.com/max/960/0*r6tfHpmMPZYLstfz.png" width=700>
 
